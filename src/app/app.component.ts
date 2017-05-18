@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FacebookService, InitParams,LoginResponse, LoginOptions} from 'ngx-facebook';
-
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +9,10 @@ import { FacebookService, InitParams,LoginResponse, LoginOptions} from 'ngx-face
 })
 export class AppComponent {
   title = 'Angular Login Page';
-  data;
   ap;
-  token;
   img;
   frnd;
-  constructor(private fb: FacebookService) {
+  constructor(private fb: FacebookService,private localStorageService: LocalStorageService) {
  
     let initParams: InitParams = {
       appId: '1411172165617274',
@@ -24,6 +22,7 @@ export class AppComponent {
     fb.init(initParams);
  
   }
+  
    login() {
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
@@ -33,8 +32,10 @@ export class AppComponent {
     this.fb.login(loginOptions)
       .then((res: LoginResponse) => {
         console.log('Logged in', res);
-        this.data=res.authResponse.userID
-        this.token=res.authResponse.accessToken;
+       // this.data=res.authResponse.userID
+        this.localStorageService.set('userID',res.authResponse.userID);
+       // this.token=res.authResponse.accessToken;
+        this.localStorageService.set('token',res.authResponse.accessToken);
         
       })
       .catch(this.handleError);
@@ -45,29 +46,34 @@ export class AppComponent {
     console.error('Error processing action', error);
   }
   getLoginStatus() {
-    this.ap='/'+this.data+'/friends'+'/?access_token='+this.token;
-    console.log(this.ap)
+    console.log(this.localStorageService.get('userID'));
+    console.log(this.localStorageService.get('token'));
+    var ID=this.localStorageService.get('userID');
+    var oauth=this.localStorageService.get('token');
+    this.ap='/'+ID+'/friends'+'/?access_token='+oauth;
+    console.log(this.ap+"I am API")
     this.fb.api(this.ap).then((response)=>{
-        console.log(response)
+        console.log(response+"second")
         this.frnd=response.summary.total_count;
     })
-    this.fb.api('/me?fields=gender,first_name,last_name,email')
-      .then((res: any) => {
-        // console.log('Got the users profile', res);
-        this.img=res;
-        console.log(this.img)
-      })
-      .catch(this.handleError);
-    this.fb.api('/me')
+    //API to get more fields 
+    // this.fb.api('/me?fields=gender,first_name,last_name,email')
+    //   .then((res: any) => {
+    //     // console.log('Got the users profile', res);
+    //     this.img=res;
+    //     console.log(this.img)
+    //   })
+    //   .catch(this.handleError);
+    this.fb.api('/me'+'/?access_token='+oauth)
       .then((res: any) => {
         // console.log('Got the users profile', res);
         this.img=res.name;
       })
       .catch(this.handleError);
   }
-  logout(){
-  this.fb.logout().then((res) => console.log(res
-  ));
-  }
+  // logout(){
+  // this.fb.logout().then((res) => console.log(res
+  // ));
+  // }
      
 }

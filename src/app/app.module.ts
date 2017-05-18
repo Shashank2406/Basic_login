@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FacebookModule } from 'ngx-facebook';
-
+import { LocalStorageModule } from 'angular-2-local-storage';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -14,7 +14,12 @@ import { AppComponent } from './app.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    LocalStorageModule.withConfig({
+            prefix: 'my-app',
+         //  storageType: 'localStorage'
+          storageType: 'sessionStorage'
+        })
   ],
   providers: [],
   bootstrap: [AppComponent]
