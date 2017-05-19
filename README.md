@@ -2,8 +2,8 @@
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
 
-## Working
-The project uses ngx-facebook and implements login with facebook. Sessions are maintained for everyuser using local storage.
+##Working
+The project uses ngx-facebook and implements login with facebook. Sessions are maintained for everyuser using local storage. 
 
 ## Further help
 

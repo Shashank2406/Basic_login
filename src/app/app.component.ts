@@ -1,29 +1,44 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { FacebookService, InitParams,LoginResponse, LoginOptions} from 'ngx-facebook';
 import { LocalStorageService } from 'angular-2-local-storage';
+
+declare var cb:any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Angular Login Page';
   ap;
   img;
   frnd;
+  result;
+  auth;
+  tweet=[];
   constructor(private fb: FacebookService,private localStorageService: LocalStorageService) {
  
     let initParams: InitParams = {
       appId: '1411172165617274',
       version: 'v2.9'
     };
- 
     fb.init(initParams);
- 
+    
   }
-  
-   login() {
+  ngOnInit(){
+      cb.setConsumerKey("s9P3RckFoHSiTBur0p0ToGgIE", "pvTUIc9L7wlqTGK93n62OAw0cSYZH8oOCt8mAmIUbMwVy5euJO");
+      cb.__call(
+    
+       "oauth_requestToken",
+      {oauth_callback: "oob"}//Redirects to enter the pin generated
+    ,(res)=>{
+      //console.log(res.oauth_token+"I am twitter");
+      cb.setToken(res.oauth_token, res.oauth_token_secret);
+      console.log(cb)
+    })
+  }
+  login() {
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
       return_scopes: true,
@@ -75,5 +90,38 @@ export class AppComponent {
   // this.fb.logout().then((res) => console.log(res
   // ));
   // }
-     
+  //TWITTER API 
+  tweetapi()
+  {
+    //console.log(cb);
+    cb.__call("oauth_authorize",{},(auth_url)=>{
+                
+                console.log(auth_url)
+                this.auth=window.open(auth_url);
+                console.log(this.auth+"I am auth");
+            })
+    }
+
+   getdetails(password)
+   {
+     cb.__call("oauth_accessToken",{oauth_verifier: password},(reply)=>{ 
+                // store the authenticated token, which may be different from the request token (!)
+                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                console.log(cb);
+              } )  
+     cb.__call("oauth2_token",{},(reply)=>{
+        var bearer_token = reply.access_token;
+        cb.setBearerToken("bearer_token")}); 
+   }
+   getdet()
+   {
+      cb.__call("account_verifyCredentials",{},(reply)=>{
+        console.log(reply);
+        this.tweet=reply;
+      }
+    );            
+   }
+    
+
+  
 }

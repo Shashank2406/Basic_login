@@ -6,6 +6,7 @@ import { FacebookModule } from 'ngx-facebook';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { AppComponent } from './app.component';
 
+
 @NgModule({
   declarations: [
     AppComponent
