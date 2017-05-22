@@ -1,8 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { FacebookService, InitParams,LoginResponse, LoginOptions} from 'ngx-facebook';
 import { LocalStorageService } from 'angular-2-local-storage';
-
 declare var cb:any;
+
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   result;
   auth;
   tweet=[];
+  pa;
   constructor(private fb: FacebookService,private localStorageService: LocalStorageService) {
  
     let initParams: InitParams = {
@@ -24,7 +25,6 @@ export class AppComponent implements OnInit {
       version: 'v2.9'
     };
     fb.init(initParams);
-    
   }
   ngOnInit(){
       cb.setConsumerKey("s9P3RckFoHSiTBur0p0ToGgIE", "pvTUIc9L7wlqTGK93n62OAw0cSYZH8oOCt8mAmIUbMwVy5euJO");
@@ -100,28 +100,49 @@ export class AppComponent implements OnInit {
                 this.auth=window.open(auth_url);
                 console.log(this.auth+"I am auth");
             })
-    }
+      var flag=0;
+      this.localStorageService.set('flag',flag);      
+  }
 
    getdetails(password)
    {
-     cb.__call("oauth_accessToken",{oauth_verifier: password},(reply)=>{ 
+     
+     var flag=this.localStorageService.get('flag');
+     if(flag==0)
+     {
+     this.localStorageService.set('pass',password);
+     //this.pa=this.localStorageService.get('pass');
+     //console.log("flag "+flag);
+     flag=1;
+     this.localStorageService.set('flag',flag);
+     //console.log("flag second "+flag);
+    }
+    this.pa=this.pa=this.localStorageService.get('pass');
+     cb.__call("oauth_accessToken",{oauth_verifier: this.pa},(reply)=>{ 
                 // store the authenticated token, which may be different from the request token (!)
-                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+                this.localStorageService.set('oauth',reply.oauth_token);
+                this.localStorageService.set('secret',reply.oauth_token_secret);
+                var token = this.localStorageService.get('oauth');
+                var secret = this.localStorageService.get('secret');
+                cb.setToken(token, secret);
                 console.log(cb);
               } )  
-     cb.__call("oauth2_token",{},(reply)=>{
-        var bearer_token = reply.access_token;
-        cb.setBearerToken("bearer_token")}); 
+      cb.__call("oauth2_token",{},(reply)=>{
+        this.localStorageService.set('access',reply.access_token);
+        var bearer_token = this.localStorageService.get('access');
+        console.log(bearer_token+ "Before b Token");
+        cb.setBearerToken("bearer_token"); 
+        //console.log(cb+ "after b Token");
+     })         
+    
    }
    getdet()
    {
       cb.__call("account_verifyCredentials",{},(reply)=>{
         console.log(reply);
+        //console.log(cb)
         this.tweet=reply;
       }
     );            
    }
-    
-
-  
 }
