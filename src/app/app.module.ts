@@ -5,16 +5,27 @@ import { HttpModule } from '@angular/http';
 import { FacebookModule } from 'ngx-facebook';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { AppComponent } from './app.component';
+import { FacebookComponent } from './facebook/facebook.component';
+import { RouterModule,Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { PassService } from './pass.service';
 
+const rou: Routes=[
+{path:'' ,component:LoginComponent},
+{path:'facebook' ,component:FacebookComponent}
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FacebookComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    RouterModule.forRoot(rou),
     FacebookModule.forRoot(),
     LocalStorageModule.withConfig({
             prefix: 'my-app',
@@ -22,7 +33,7 @@ import { AppComponent } from './app.component';
           storageType: 'sessionStorage'
         })
   ],
-  providers: [],
+  providers: [PassService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

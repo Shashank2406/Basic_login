@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { FacebookService, InitParams,LoginResponse, LoginOptions} from 'ngx-facebook';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { CanActivate ,Router} from '@angular/router';
 declare var cb:any;
 
 
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit {
   auth;
   tweet=[];
   pa;
-  constructor(private fb: FacebookService,private localStorageService: LocalStorageService) {
+  constructor(public router1:Router,private fb: FacebookService,private localStorageService: LocalStorageService) {
  
     let initParams: InitParams = {
       appId: '1411172165617274',
@@ -66,10 +67,11 @@ export class AppComponent implements OnInit {
     var ID=this.localStorageService.get('userID');
     var oauth=this.localStorageService.get('token');
     this.ap='/'+ID+'/friends'+'/?access_token='+oauth;
+    //console.log(oauth)
     console.log(this.ap+"I am API")
     this.fb.api(this.ap).then((response)=>{
         console.log(response+"second")
-        this.frnd=response.summary.total_count;
+        this.frnd=response.summary.total_count;   
     })
     //API to get more fields 
     // this.fb.api('/me?fields=gender,first_name,last_name,email')
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit {
         this.img=res.name;
       })
       .catch(this.handleError);
+    this.router1.navigate['/facebook'];    
   }
   // logout(){
   // this.fb.logout().then((res) => console.log(res
@@ -118,8 +121,11 @@ export class AppComponent implements OnInit {
      //console.log("flag second "+flag);
     }
     this.pa=this.pa=this.localStorageService.get('pass');
+    console.log(this.pa+"Pass")
+    console.log(cb);
      cb.__call("oauth_accessToken",{oauth_verifier: this.pa},(reply)=>{ 
                 // store the authenticated token, which may be different from the request token (!)
+                console.log(reply)
                 this.localStorageService.set('oauth',reply.oauth_token);
                 this.localStorageService.set('secret',reply.oauth_token_secret);
                 var token = this.localStorageService.get('oauth');

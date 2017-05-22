@@ -1,0 +1,15 @@
+<h1> Welcome! </h1> 
+<img src="https://graph.facebook.com/{{data.id}}/picture?type=large"/>
+<strong>{{data.first_name + " "+ data.last_name }}</strong><br>
+
+  <ul class="list-group">
+  <li class="list-group-item list-group-item-info">Email  -{{data.email}}</li>
+  <li class="list-group-item list-group-item-info">Gender -{{data.gender}}</li>
+  <li class="list-group-item list-group-item-info">User ID-{{data.id}}</li>
+  <li class="list-group-item list-group-item-info">Total Friends -{{data.friends}}</li>
+  </ul>   
+ <button class="btn btn-primary" (click)="post()">Post</button>
+<input type="text" class="form-control"> 
+ <button class="btn btn-primary" (click)="logout()">Logout</button>
+  <!--<img src="https://graph.facebook.com/{{data.id}}/picture?type=large"/>-->
+ <!--<button (click)='HELLO()'class="btn btn-default ">HELLO -->
