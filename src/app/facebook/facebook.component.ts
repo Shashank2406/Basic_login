@@ -13,17 +13,20 @@ import { LocalStorageService } from 'angular-2-local-storage';
 export class FacebookComponent implements OnInit {
 
   constructor(private getter:PassService,private fb: FacebookService,private router1:Router,private localStorageService: LocalStorageService) { }
-  data={gender: "", first_name: "", last_name: "", email: "", id: "",friends:""};
+  data={gender: "", first_name: "", last_name: "", email: "", id: "",friends:"",post:""};
+  postdata="";
   ngOnInit() {
    this.data =this.getter.get();
   }
-  // post()
-  // {
-  //   console.log()
-  //   var publish = {method: 'feed', message: "Hello",href: "https://www.google.com" };
-  //   this.fb.ui(publish);
-    
-  // }
+  post(postdata)
+  {
+   console.log(postdata)
+   this.fb.api("/me/feed","post",{"message": postdata})
+   .then((res)=>{
+     console.log(res);
+     alert("Post Successfull")
+   })    
+  }
   logout()
   {
     this.fb.logout();

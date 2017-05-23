@@ -12,15 +12,14 @@ declare var cb:any;
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  title = 'Angular Login Page';
   ap;
-  img={gender: "", first_name: "", last_name: "", email: "", id: "",friends: ""};
+  img={gender: "", first_name: "", last_name: "", email: "", id: "",friends: "",post:""};
   frnd;
   result;
   auth;
   tweet=[];
   pa;
+  flag=1;
   constructor(private router1:Router,private sender:PassService,private fb: FacebookService,private localStorageService: LocalStorageService) {
  
     let initParams: InitParams = {
@@ -45,7 +44,7 @@ export class LoginComponent implements OnInit {
     const loginOptions: LoginOptions = {
       enable_profile_selector: true,
       return_scopes: true,
-      scope: 'public_profile,user_friends,email,pages_show_list'
+      scope: 'publish_actions,user_posts,public_profile,user_friends,email,pages_show_list'
     };
     this.fb.login(loginOptions)
       .then((res: LoginResponse) => {
@@ -77,6 +76,12 @@ export class LoginComponent implements OnInit {
         this.frnd=response.summary.total_count; 
         this.img.friends=this.frnd;  
     })
+    this.fb.api("/me/feed?limit=1000")
+   .then((res)=>{
+     console.log(res)
+     this.img.post=res.data.length;
+     this.router1.navigate(["/facebook"]);
+   })
     //API to get more fields 
     this.fb.api('/me?fields=gender,first_name,last_name,email')
       .then((res: any) => {
@@ -84,7 +89,7 @@ export class LoginComponent implements OnInit {
         this.img=res;
         console.log(this.img)
         this.sender.set(this.img);
-        this.router1.navigate(["/facebook"]);
+        
       })
       .catch(this.handleError);
     // this.fb.api('/me'+'/?access_token='+oauth)

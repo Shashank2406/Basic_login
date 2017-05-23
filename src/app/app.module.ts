@@ -9,6 +9,7 @@ import { FacebookComponent } from './facebook/facebook.component';
 import { RouterModule,Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { PassService } from './pass.service';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 const rou: Routes=[
 {path:'' ,component:LoginComponent},
@@ -33,7 +34,7 @@ const rou: Routes=[
           storageType: 'sessionStorage'
         })
   ],
-  providers: [PassService],
+  providers: [PassService,LocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

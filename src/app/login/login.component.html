@@ -1,6 +1,3 @@
-<h1>
-  {{title}}
-</h1>
 <button (click)="login()" class="btn btn-default">
     FB Login
   </button>
@@ -28,8 +25,10 @@
    Get details
   </button>  
 <br><input type="password" #password placeholder="Enter PIN">
+  <div *ngIf="!flag">
   <ul class="list-group">
   <li class="list-group-item list-group-item-info">{{tweet.name}}</li>
   <li class="list-group-item list-group-item-info">{{tweet.screen_name}}</li>
   <li class="list-group-item list-group-item-info">{{tweet.location}}</li>
   </ul>    
+  </div>
