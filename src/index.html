@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>LoginApp</title>
   <base href="/">
-  <script type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<!--   <script type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js"></script> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -29,22 +29,22 @@
     //         // consider storing the token in a cookie or HTML5 local storage
     //     }
     // );
-    function abc(){cb.__call(
-    "oauth_requestToken",
-    {oauth_callback: "oob"},
-    function (reply) {
-        // stores it
-        console.log(reply);
-        cb.setToken(reply.oauth_token, reply.oauth_token_secret);
-        // gets the authorize screen URL
-        cb.__call(
-            "oauth_authorize",
-            {},
-            function (auth_url) {
-                console.log(auth_url)
-                window.codebird_auth=window.open(auth_url);
-            }
-        );
+//     function abc(){cb.__call(
+//     "oauth_requestToken",
+//     {oauth_callback: "oob"},
+//     function (reply) {
+//         // stores it
+//         console.log(reply);
+//         cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+//         // gets the authorize screen URL
+//         cb.__call(
+//             "oauth_authorize",
+//             {},
+//             function (auth_url) {
+//                 console.log(auth_url)
+//                 window.codebird_auth=window.open(auth_url);
+//             }
+//         );
   //       cb.__call(
   //         "oauth_accessToken",
   //             {oauth_verifier: document.getElementById("PINFIELD").value},
